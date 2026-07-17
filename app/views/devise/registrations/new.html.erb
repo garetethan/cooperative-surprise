@@ -4,6 +4,12 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
+    <p><%= f.label :family_code %></p>
+    <p><%= f.text_field :family_code %></p>
+    <p>Family IDs are ten-letter random-looking case-insensitive codes. If a family member of yours has asked you to sign-up, they will need to send you the family ID so you can join their existing family.</p>
+  </div>
+
+  <div class="field">
     <p><%= f.label :name %></p>
     <p><%= f.text_field :name %></p>
     <p>This is the name other family members will see to identify you. It should be different than any one else's in your family.</p>
