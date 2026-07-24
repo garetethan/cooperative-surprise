@@ -38,3 +38,6 @@
 *.swp
 *.swo
 *.swn
+
+# Don't push caches
+/db/schema_cache.yml
