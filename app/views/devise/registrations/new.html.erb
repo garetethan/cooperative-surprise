@@ -4,10 +4,36 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <p><%= f.label :family_code %></p>
-    <p><%= f.text_field :family_code %></p>
-    <p>Family IDs are ten-letter random-looking case-insensitive codes. If a family member of yours has asked you to sign-up, they will need to send you the family ID so you can join their existing family.</p>
+    <p><%= f.label 'New or existing family?' %></p>
+    <div>
+      <%= f.radio_button :family_status, 'new', data: { action: 'hide-family-code' } %>
+      <%= f.label :family_status_new, 'Create a new family' %>
+    </div>
+    <div>
+      <%= f.radio_button :family_status, 'existing', data: { action: 'show-family-code' } %>
+      <%= f.label :family_status_existing, 'Join an existing family' %>
+    </div>
+    <p>If a family member of yours has asked you to sign-up, you should join their family instead of creating a new one.</p>
   </div>
+
+  <div id="family-code-field" class="field">
+    <p><%= f.label :family_code %></p>
+    <p><%= f.text_field :family_code, value: params[:family] %></p>
+    <p>Family IDs are ten-letter random-looking case-insensitive codes. If a family member of yours asked you to sign-up, they should also have sent you the code to enter here.</p>
+  </div>
+
+  <%# Hide the family ID field if creating a new family. %>
+  <script>
+    let familyField = document.getElementById('family-code-field');
+    let hide = document.querySelector('[data-action="hide-family-code"]')
+    hide.addEventListener('click', function() {
+      familyField.style.display = 'none';
+    });
+    let show = document.querySelector('[data-action="show-family-code"]')
+    show.addEventListener('click', function() {
+      familyField.style.display = 'block';
+    });
+  </script>
 
   <div class="field">
     <p><%= f.label :name %></p>
