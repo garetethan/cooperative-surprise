@@ -5,7 +5,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   before_validation :set_or_create_family, on: :create
-  validates :family_status, presence: true
   validates :family_code, presence: true
   validates :name, presence: true
 

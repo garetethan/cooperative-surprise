@@ -20,6 +20,13 @@
   <body>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
+    <% if user_signed_in? %>
+        <nav>
+          <%= link_to 'Home', root_path %>
+          <%= link_to 'User settings', edit_user_registration_path %>
+          <%= link_to 'Sign out', destroy_user_session_path %>
+        </nav>
+    <% end %>
     <%= yield %>
   </body>
 </html>
