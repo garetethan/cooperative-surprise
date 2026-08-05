@@ -6,8 +6,12 @@ class Family < ApplicationRecord
   @@code_charset = ('a'..'z').to_a
   @@code_length = 10
 
+  has_many :users, foreign_key: :family_code, primary_key: :code
+  belongs_to :admin, class_name: 'User', optional: true
+
   before_validation :generate_code, on: :create
-  has_many :users
+  # allow_nil allows multiple families to have nil admins
+  validates :admin, uniqueness: true, allow_nil: true
 
   private
 

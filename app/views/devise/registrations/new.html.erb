@@ -10,7 +10,7 @@
       <%= f.label :family_status_new, 'Create a new family' %>
     </div>
     <div>
-      <%= f.radio_button :family_status, 'existing', data: { action: 'show-family-code' } %>
+      <%= f.radio_button :family_status, 'existing', data: { action: 'show-family-code' }, checked: true %>
       <%= f.label :family_status_existing, 'Join an existing family' %>
     </div>
     <p>If a family member of yours has asked you to sign-up, you should join their family instead of creating a new one.</p>

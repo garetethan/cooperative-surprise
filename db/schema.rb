@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_07_24_213835) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_30_202426) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_24_213835) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "code"
+    t.bigint "admin_id"
+    t.index ["admin_id"], name: "index_families_on_admin_id", unique: true
     t.index ["code"], name: "index_families_on_code", unique: true
   end
 
@@ -36,5 +38,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_24_213835) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "families", "users", column: "admin_id"
   add_foreign_key "users", "families", column: "family_code", primary_key: "code"
 end

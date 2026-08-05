@@ -40,8 +40,12 @@
   </div>
 <% end %>
 
-<h3>Cancel my account</h3>
+<h3>Delete my account</h3>
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+<% @delete_confirmation = 'Are you sure?' %>
+<% if current_user.administered_family %>
+  <% @delete_confirmation += "\nYou are the admin of your family, so deleting your account will leave your family with no admin." %>
+<% end %>
+<div>Unhappy? <%= button_to 'Delete my account', registration_path(resource_name), data: { confirm: @delete_confirmation, turbo_confirm: @delete_confirmation }, method: :delete %></div>
 
 <%= link_to "Back", :back %>
