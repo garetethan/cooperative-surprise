@@ -28,22 +28,6 @@
     <p>Your family members should recognize this name so that they know when they've joined the family successfully. Your family's last name (or the last name of your common ancestor) would be a good choice.</p>
   </div>
 
-  <%# Hide the family ID field if creating a new family. %>
-  <script>
-    let familyCodeField = document.getElementById('family-code-field');
-    let familyNameField = document.getElementById('family-name-field');
-    let newFamilyTriggers = document.querySelector('[data-action="new-family"]')
-    newFamilyTriggers.addEventListener('click', function() {
-      familyCodeField.style.display = 'none';
-      familyNameField.style.display = 'block';
-    });
-    let existingFamilyTriggers = document.querySelector('[data-action="existing-family"]')
-    existingFamilyTriggers.addEventListener('click', function() {
-      familyCodeField.style.display = 'block';
-      familyNameField.style.display = 'none';
-    });
-  </script>
-
   <div class="field">
     <p><%= f.label :name, 'Your name' %></p>
     <p><%= f.text_field :name %></p>
