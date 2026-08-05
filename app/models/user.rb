@@ -20,13 +20,13 @@ class User < ApplicationRecord
   after_destroy :destroy_family, if: -> { self.family.users.size == 1 }
 
   # family_status getters / setters are required because of the radio buttons in the user registration view, even though the field is ignored by the server upon submission
-  attr_accessor :family_status
+  attr_accessor :family_status, :family_name
 
   private
 
   def set_or_create_family
-    if self.family_status == 'new'
-      new_family = Family.new
+    if family_status == 'new'
+      new_family = Family.new(name: family_name)
       # Validate the new family so that it has a family_code
       new_family.valid?
       # Indirectly set the user's family_code

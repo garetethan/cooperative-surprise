@@ -12,6 +12,7 @@ class Family < ApplicationRecord
   before_validation :generate_code, on: :create
   # allow_nil allows multiple families to have nil admins
   validates :admin, uniqueness: true, allow_nil: true
+  validates :name, presence: true
 
   private
 

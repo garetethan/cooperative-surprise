@@ -6,11 +6,11 @@
   <div class="field">
     <p><%= f.label 'New or existing family?' %></p>
     <div>
-      <%= f.radio_button :family_status, 'new', data: { action: 'hide-family-code' } %>
+      <%= f.radio_button :family_status, 'new', data: { action: 'new-family' } %>
       <%= f.label :family_status_new, 'Create a new family' %>
     </div>
     <div>
-      <%= f.radio_button :family_status, 'existing', data: { action: 'show-family-code' }, checked: true %>
+      <%= f.radio_button :family_status, 'existing', data: { action: 'existing-family' }, checked: true %>
       <%= f.label :family_status_existing, 'Join an existing family' %>
     </div>
     <p>If a family member of yours has asked you to sign-up, you should join their family instead of creating a new one.</p>
@@ -22,21 +22,30 @@
     <p>Family IDs are ten-letter random-looking case-insensitive codes. If a family member of yours asked you to sign-up, they should also have sent you the code to enter here.</p>
   </div>
 
+  <div id="family-name-field" class="field">
+    <p><%= f.label :family_name %></p>
+    <p><%= f.text_field :family_name %></p>
+    <p>Your family members should recognize this name so that they know when they've joined the family successfully. Your family's last name (or the last name of your common ancestor) would be a good choice.</p>
+  </div>
+
   <%# Hide the family ID field if creating a new family. %>
   <script>
-    let familyField = document.getElementById('family-code-field');
-    let hide = document.querySelector('[data-action="hide-family-code"]')
-    hide.addEventListener('click', function() {
-      familyField.style.display = 'none';
+    let familyCodeField = document.getElementById('family-code-field');
+    let familyNameField = document.getElementById('family-name-field');
+    let newFamilyTriggers = document.querySelector('[data-action="new-family"]')
+    newFamilyTriggers.addEventListener('click', function() {
+      familyCodeField.style.display = 'none';
+      familyNameField.style.display = 'block';
     });
-    let show = document.querySelector('[data-action="show-family-code"]')
-    show.addEventListener('click', function() {
-      familyField.style.display = 'block';
+    let existingFamilyTriggers = document.querySelector('[data-action="existing-family"]')
+    existingFamilyTriggers.addEventListener('click', function() {
+      familyCodeField.style.display = 'block';
+      familyNameField.style.display = 'none';
     });
   </script>
 
   <div class="field">
-    <p><%= f.label :name %></p>
+    <p><%= f.label :name, 'Your name' %></p>
     <p><%= f.text_field :name %></p>
     <p>This is the name other family members will see to identify you. It should be different than any one else's in your family.</p>
   </div>
