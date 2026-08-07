@@ -1,0 +1,17 @@
+<h2>Edit family</h2>
+
+<%= form_for(@administered_family, url: family_path, html: { method: :put }) do |f| %>
+
+  <div class="field">
+    <p><%= f.label :name, 'Family name' %></p>
+    <p><%= f.text_field :name, autocomplete: 'name' %></p>
+  </div>
+
+  <p>If you're looking for a way to delete your family, this will occur automatically if all family members delete their accounts.</p>
+
+  <div class="actions">
+    <%= f.submit "Update" %>
+  </div>
+<% end %>
+
+<%= link_to "Back", :back %>

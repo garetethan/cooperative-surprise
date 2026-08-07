@@ -24,6 +24,9 @@
         <nav>
           <%= link_to 'Home', root_path %>
           <%= link_to 'User settings', edit_user_registration_path %>
+          <% if current_user.administered_family %>
+            <%= link_to 'Family settings', edit_family_path %>
+          <% end %>
           <%= link_to 'Sign out', destroy_user_session_path, data: { turbo_method: :delete } %>
         </nav>
     <% end %>
