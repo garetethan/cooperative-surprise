@@ -10,7 +10,11 @@ class Family < ApplicationRecord
   belongs_to :admin, class_name: 'User', optional: true
 
   before_validation :generate_code, on: :create
-  # allow_nil allows multiple families to have nil admins
+  # Code generation is designed to make collisions effectively impossible, so this uniqueness constraint is probably redundant
+  validates :code, presence: true, uniqueness: { case_sensitive: false }
+  # admin is intentionally allowed to be null
+  # This lets a family be created before its users
+  # allow_nil allows multiple families to have nil admins simultaneously
   validates :admin, uniqueness: true, allow_nil: true
   validates :name, presence: true
 

@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_05_165602) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_07_223437) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "families", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "code"
+    t.string "code", null: false
     t.bigint "admin_id"
-    t.string "name"
+    t.string "name", null: false
     t.index ["admin_id"], name: "index_families_on_admin_id", unique: true
     t.index ["code"], name: "index_families_on_code", unique: true
   end
@@ -32,8 +32,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_05_165602) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
-    t.string "family_code"
+    t.string "name", null: false
+    t.string "family_code", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["family_code"], name: "index_users_on_family_code"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

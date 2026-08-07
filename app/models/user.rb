@@ -10,11 +10,15 @@ class User < ApplicationRecord
   # Families and initial users (who create a new family on sign-up) have a chicken and egg relationship.
   # A family can't have an admin that does not exist yet, and a user can't belong to a family that doesn't exist yet.
   # The compromise is that families are permitted to have no specified admin during the creation process.
-  # The order and timing of set_or_create_family, set_family_admin, and destroy_administered_family are delicately designed to accomodate these restrictions.
+  # The order and timing of set_or_create_family, set_family_admin, and destroy_family are delicately designed to accomodate these restrictions.
   before_validation :set_or_create_family, on: :create
-  after_create :set_family_admin, if: -> { self.family_status == 'new' }
+
   validates :family_status, on: :create, presence: true
+  validates :family_name, on: :create, if: :new_family?, presence: true
+  validates :family_code, on: :create, unless: :new_family?, presence: true, length: { is: 10 }
   validates :name, presence: true
+
+  after_create :set_family_admin, if: :new_family?
 
   before_destroy :unadmin, if: -> { self.administered_family }
   after_destroy :destroy_family, if: -> { self.family.users.size == 1 }
@@ -24,8 +28,12 @@ class User < ApplicationRecord
 
   private
 
+  def new_family?
+    family_status == 'new'
+  end
+
   def set_or_create_family
-    if family_status == 'new'
+    if new_family?
       new_family = Family.new(name: family_name)
       # Validate the new family so that it has a family_code
       new_family.valid?
