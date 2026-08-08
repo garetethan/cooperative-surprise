@@ -15,8 +15,10 @@ class User < ApplicationRecord
 
   validates :family_status, on: :create, presence: true
   validates :family_name, on: :create, if: :new_family?, presence: true
+  validate_identifier :family_name, on: :create
   validates :family_code, on: :create, unless: :new_family?, presence: true, length: { is: 10 }
   validates :name, presence: true
+  validate_identifier :name
 
   after_create :set_family_admin, if: :new_family?
 
