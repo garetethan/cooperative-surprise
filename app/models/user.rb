@@ -5,7 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   belongs_to :family, foreign_key: :family_code, primary_key: :code
-  has_one :administered_family, class_name: 'Family', foreign_key: 'admin_id'
+  # If a family's admin is destroyed, the family continues to exist with a null admin_id value
+  has_one :administered_family, class_name: 'Family', foreign_key: 'admin_id', dependent: :nullify
 
   # Families and initial users (who create a new family on sign-up) have a chicken and egg relationship.
   # A family can't have an admin that does not exist yet, and a user can't belong to a family that doesn't exist yet.
@@ -22,7 +23,6 @@ class User < ApplicationRecord
 
   after_create :set_family_admin, if: :new_family?
 
-  before_destroy :unadmin, if: -> { self.administered_family }
   # By the time after_destroy runs, the user being destroyed no longer appears in the family's users
   after_destroy :destroy_family, if: -> { self.family.users.size == 0 }
 
@@ -50,11 +50,6 @@ class User < ApplicationRecord
   # Only runs if the user is creating a new family
   def set_family_admin
     family.update!(admin: self)
-  end
-
-  # Only runs if the user is an admin
-  def unadmin
-    administered_family.update!(admin: nil)
   end
 
   # Only runs if the user being deleted is the only one in their family
