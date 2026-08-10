@@ -23,7 +23,8 @@ class User < ApplicationRecord
   after_create :set_family_admin, if: :new_family?
 
   before_destroy :unadmin, if: -> { self.administered_family }
-  after_destroy :destroy_family, if: -> { self.family.users.size == 1 }
+  # By the time after_destroy runs, the user being destroyed no longer appears in the family's users
+  after_destroy :destroy_family, if: -> { self.family.users.size == 0 }
 
   # family_status getters / setters are required because of the radio buttons in the user registration view, even though the field is ignored by the server upon submission
   attr_accessor :family_status, :family_name
@@ -41,8 +42,9 @@ class User < ApplicationRecord
       new_family.valid?
       # Indirectly set the user's family_code
       self.family = new_family
+    else
+      self.family = Family.find_by code: family_code
     end
-    # Setting an existing family has not yet been implemented
   end
 
   # Only runs if the user is creating a new family
