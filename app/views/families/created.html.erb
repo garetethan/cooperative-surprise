@@ -1,0 +1,5 @@
+<h2>Welcome, <%= current_user.name %>!</h2>
+<p>You've signed up successfully, and created a new family (which you are a member of) called <%= @administered_family.name %>. Now you just have to invite your family members to join the family so you can start sharing your wishlists!</p>
+<p>Send this code to your family members, and tell them to enter it when signing up:</p>
+<p><%= @administered_family.code %></p>
+<p>Only share this code with people you trust, since anyone with the code can join your family, see everyone else's lists, and so on.</p>

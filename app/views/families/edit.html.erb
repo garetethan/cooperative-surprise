@@ -2,6 +2,10 @@
 
 <%= form_for(@administered_family, url: family_path, html: { method: :put }) do |f| %>
 
+  <p>Your family code is:</p>
+  <p><%= @administered_family.code %></p>
+  <p>Only share this code with people you trust, since anyone with the code can join your family, see everyone else's lists, and so on.</p>
+
   <div class="field">
     <p><%= f.label :name, 'Family name' %></p>
     <p><%= f.text_field :name, autocomplete: 'name' %></p>

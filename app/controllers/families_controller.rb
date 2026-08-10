@@ -2,6 +2,9 @@ class FamiliesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_administered_family
 
+  def created
+  end
+
   def edit
   end
 
