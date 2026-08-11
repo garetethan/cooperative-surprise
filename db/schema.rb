@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_07_223437) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_11_002105) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,27 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_07_223437) do
     t.string "name", null: false
     t.index ["admin_id"], name: "index_families_on_admin_id", unique: true
     t.index ["code"], name: "index_families_on_code", unique: true
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "name"
+    t.string "price"
+    t.text "description"
+    t.text "link"
+    t.boolean "plural"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_items_on_user_id"
+  end
+
+  create_table "purchases", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_purchases_on_item_id"
+    t.index ["user_id"], name: "index_purchases_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -40,5 +61,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_07_223437) do
   end
 
   add_foreign_key "families", "users", column: "admin_id"
+  add_foreign_key "items", "users"
+  add_foreign_key "purchases", "items"
+  add_foreign_key "purchases", "users"
   add_foreign_key "users", "families", column: "family_code", primary_key: "code"
 end

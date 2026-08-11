@@ -7,6 +7,9 @@ class User < ApplicationRecord
   belongs_to :family, foreign_key: :family_code, primary_key: :code
   # If a family's admin is destroyed, the family continues to exist with a null admin_id value
   has_one :administered_family, class_name: 'Family', foreign_key: 'admin_id', dependent: :nullify
+  has_many :items, dependent: :destroy
+  has_many :purchases, dependent: :nullify
+  has_many :purchased_items, through: :purchases, source: :item
 
   # Families and initial users (who create a new family on sign-up) have a chicken and egg relationship.
   # A family can't have an admin that does not exist yet, and a user can't belong to a family that doesn't exist yet.
