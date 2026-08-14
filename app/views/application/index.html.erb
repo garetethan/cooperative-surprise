@@ -1,15 +1,178 @@
 <% if user_signed_in? %>
-  <p>Welcome, <%= current_user.name %>.</p>
-  <p>Your family's wishlists will appear here.</p>
+  <h1>Wishlist Manager</h1>
+  <h2>Welcome, <%= current_user.name %></h2>
+  <h2 id='others'>Others' lists</h2>
+  <% current_user.family.users.each do |other_user| %>
+    <% if other_user == current_user %>
+      <% next %>
+    <% end %>
+    <h3><%= other_user.name %></h3>
+    <% if other_user.items.empty? %>
+      <p><i>This person hasn't made their list yet.</i></p>
+    <% else %>
+      <table>
+        <tr>
+          <th class='sortable-column'>Name</th>
+          <th class='sortable-column'>Price</th>
+          <th>Description</th>
+          <th>Link</th>
+          <th class='sortable-column'>Bought?</th>
+        </tr>
+        <% other_user.items.each do |item| %>
+          <tr <% if item.purchasers.include? current_user or (not item.plural? and not item.purchasers.empty?) %>class='item-purchased'<% end %>>
+            <td>
+              <p><%= item.name %></p>
+            </td>
+            <td>
+              <p>$<%= item.price %></p>
+            </td>
+            <td>
+              <p class='description'><%= item.description %></p>
+            </td>
+            <td>
+              <p><% if not item.link.nil? and not item.link.empty? %><a href='<%= item.link %>' target='_blank'>Link</a><% end %></p>
+            </td>
+            <td>
+              <% if item.plural? %>
+                <p>This item may be bought multiple times by multiple people.</p>
+              <% end %>
+              <% if item.purchasers.include? current_user %>
+                <p>You bought this item.</p>
+                <%= button_to "Actually I didn't buy it", item_purchase_path(item, current_user.purchases.find_by(item: item)), method: :delete %>
+              <% elsif item.plural? or item.purchasers.empty? %>
+                <%= button_to 'I bought this item', item_purchases_path(item), method: :post %>
+              <% else %>
+                <p>Someone else already bought this item.</p>
+              <% end %>
+              <% if item.plural? %>
+                <% if item.purchasers.empty? %>
+                  <p>No one has bought this item yet.</p>
+                <% elsif item.purchasers.length == 1 and item.purchasers.first == current_user %>
+                  <p>No one else has bought this item yet.</p>
+                <% else %>
+                  <% item_count = item.purchasers.count {|us| us != current_user} %>
+                  <p><strong><%= item_count %></strong> other <% if item_count == 1 %>person has<% else %>people have<% end %> already bought this item.</p>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+  <% end %>
+  <h2 id='you'>Your list</h2>
+  <h3>Existing items</h3>
+  <% if current_user.items.empty? %>
+    <p><i>You don't have any items listed yet.</i></p>
+  <% else %>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Link</th>
+        <th>Plurality</th>
+        <th>Save</th>
+        <th>Delete</th>
+      </tr>
+      <% current_user.items.each do |item| %>
+        <tr>
+          <%# The namespace prevents, for example, all item name fields from having the same id and name %>
+          <%= form_with model: item, namespace: "#{item.id}" do |f| %>
+            <%# Name %>
+            <td>
+              <%= f.text_field :name %>
+            </td>
+            <%# Price %>
+            <td>
+              <div class='form-group'>
+                $<%= f.text_field :price, size: 6 %>
+              </div>
+            </td>
+            <%# Description %>
+            <td>
+              <%= f.text_area :description, class: 'description' %>
+            </td>
+            <%# Link %>
+            <td>
+              <%= f.text_area :link %>
+            </td>
+            <%# Plurality %>
+            <td class='wide-cell'>
+              <%= f.radio_button :plural, 'singular' %>
+              <%= f.label :plural_singular, 'If someone buys this for me, others should avoid buying another one' %>
+              <br>
+              <%= f.radio_button :plural, 'plural' %>
+              <%= f.label :plural_plural, "It's ok if multiple people each buy me several of this item" %>
+            </td>
+            <%# Actions %>
+            <td>
+              <%= f.submit 'Save' %>
+            </td>
+          <%# We have to close the item update form before the delete item button %>
+          <% end %>
+          <td>
+            <%= button_to 'Delete', item, method: :delete, data: { turbo_confirm: "Delete #{item.name}?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+  <h3>New item</h3>
+  <%# The namespace prevents, for example, the item name field from having the same id or name as the name fields of existing items %>
+  <%= form_with model: Item.new, namespace: 'new' do |f|  %>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Link</th>
+        <th>Plurality</th>
+        <th>Save</th>
+      </tr>
+      <tr>
+        <%# Name %>
+        <td>
+          <%= f.text_field :name %>
+        </td>
+        <%# Price %>
+        <td>
+          <div class='form-group'>
+            $<%= f.text_field :price, size: 6 %>
+          </div>
+        </td>
+        <%# Description %>
+        <td>
+          <%= f.text_area :description, class: 'description' %>
+        </td>
+        <%# Link %>
+        <td>
+          <%= f.text_area :link %>
+        </td>
+        <%# Plurality %>
+        <td class='wide-cell'>
+          <%= f.radio_button :plural, 'singular', checked: true %>
+          <%= f.label :plural_singular, 'If someone buys this for me, others should avoid buying another one' %>
+          <br>
+          <%= f.radio_button :plural, 'plural' %>
+          <%= f.label :plural_plural, "It's ok if multiple people each buy me several of this item" %>
+        </td>
+        <%# Actions %>
+        <td>
+          <%= f.submit 'Save' %>
+        </td>
+      </tr>
+    </table>
+  <% end %>
 <% else %>
   <h1>Cooperative Surprise</h1>
   <p>Cooperative Surprise is a wishlist manager designed to be used by family members buying gifts for each other. You can create your own wishlist, and everyone except you can mark items they've bought and see what others have already bought. Likewise, you can see what your family members have asked for, and mark off what you buy.</p>
 
   <p>Sign up to get started.</p>
 
-  <%= link_to 'Sign up', new_user_registration_path %>
+  <%= button_to 'Sign up', new_user_registration_path, method: :get %>
 
   <p>Already made an account?</p>
 
-  <%= link_to 'Sign in', new_user_session_path %>
+  <%= button_to 'Sign in', new_user_session_path, method: :get %>
 <% end %>
