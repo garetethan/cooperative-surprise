@@ -4,6 +4,7 @@ class Item < ApplicationRecord
   has_many :purchasers, through: :purchases, source: :user
 
   validates :name, presence: true
+  validate_identifier :name
   validates :plural, inclusion: { in: ['singular', 'plural'] }
 
   # Allow views to autofill the right radio button
