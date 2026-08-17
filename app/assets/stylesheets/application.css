@@ -73,6 +73,8 @@ textarea {
 	/* Chosen to be close to the height input table cells have when the page loads */
 	/* Percentage-based heights don't work because <td>s don't have a set height; they adjust to their contents */
 	height: 7em;
+	/* Preserve newlines and other whitespace */
+	white-space: pre-wrap;
 	width: 100%;
 }
 
@@ -98,6 +100,8 @@ textarea {
 	overflow: auto;
 	/* anywhere smartly breaks in the middle of words only when appropriate */
 	overflow-wrap: anywhere;
+	/* Preserve newlines and other whitespace */
+	white-space: pre-wrap;
 }
 
 .item-name-output-col {
