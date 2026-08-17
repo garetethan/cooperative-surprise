@@ -13,3 +13,118 @@
  *= require_tree .
  *= require_self
  */
+
+/* Many classes used in the views are straight from Bootstrap, and do not appear here */
+
+/* Bootstrap overrides */
+.table-warning {
+	--bs-table-bg: #AA2222;
+}
+
+.alert-success {
+	--bs-alert-bg: #33AA33;
+}
+
+.btn {
+	font-weight: bold;
+}
+
+/* I don't like how Bootstrap forces all tables to have a width of 100% */
+.table {
+	width: auto;
+	border-left: 1px solid;
+	border-right: 1px solid;
+}
+
+/* Project-specific styles */
+body {
+	background-color: black;
+	color: white;
+	font-family: sans-serif;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+textarea {
+	font-family: sans-serif;
+	font-size: 100%;
+	height: 7em;
+	width: 100%;
+}
+
+/* General */
+.full-width {
+	width: 100%;
+}
+
+/* Wishlist output (show and buy) tables */
+.sortable-column {
+	cursor: pointer;
+}
+
+.item-output {
+	max-height: 15em;
+	overflow: auto;
+	/* anywhere smartly breaks in the middle of words only when appropriate */
+	overflow-wrap: anywhere;
+}
+
+.item-name-output-col {
+	min-width: 10em;
+}
+
+.item-price-output-col {
+	min-width: 5em;
+}
+
+.item-description-output-col {
+	min-width: 15em;
+	max-width: 50%;
+}
+
+.item-link-output-col {
+	white-space: nowrap;
+}
+
+.item-output-purchase-col {
+	min-width: 15em;
+}
+
+/* Wishlist input (edit and create) tables */
+.item-name-input-col {
+	min-width: 10em;
+	width: 15%;
+}
+
+.item-price-input-col {
+	min-width: 5em;
+	width: 10%;
+}
+
+.item-description-input-col {
+	min-width: 10em;
+	width: 25%;
+}
+
+.item-link-input-col {
+	min-width: 10em;
+	width: 20%;
+}
+
+.item-plurality-input-col {
+	min-width: 15em;
+	width: 20%;
+}
+
+/* A tiny width fits the column to the width of its children */
+.item-input-action-col {
+	white-space: nowrap;
+	width: 1%;
+}
+
+.item-link-input {
+	font-family: monospace;
+}
