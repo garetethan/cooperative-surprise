@@ -17,7 +17,13 @@
 /* Many classes used in the views are straight from Bootstrap, and do not appear here */
 
 /* Bootstrap overrides */
+.alert {
+	/* Any bottom margin leaves a gap above the navbar, which looks bad */
+	--bs-alert-margin-bottom: 0rem;
+}
+
 .alert-success {
+	/* Make success much greener; the default is super pale */
 	--bs-alert-bg: #33AA33;
 }
 
@@ -25,12 +31,9 @@
 	font-weight: bold;
 }
 
-.container {
-	margin: 20px 20px 0px 20px;
-}
-
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	/* Add the same margin to the top as the bottom has */
+	/* Without this headings in the middle of a page squish up against whatever is above them */
 	margin-top: 0.5rem;
 }
 
@@ -47,6 +50,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .table-warning {
+	/* Similarly to success, the default is way too pale */
+	/* Also change from yellow to red */
 	--bs-table-bg: #AA2222;
 }
 
@@ -65,6 +70,8 @@ p {
 textarea {
 	font-family: sans-serif;
 	font-size: 100%;
+	/* Chosen to be close to the height input table cells have when the page loads */
+	/* Percentage-based heights don't work because <td>s don't have a set height; they adjust to their contents */
 	height: 7em;
 	width: 100%;
 }
@@ -75,6 +82,7 @@ textarea {
 	font-size: 150%;
 }
 
+/* Used both to stretch and compress */
 .full-width {
 	width: 100%;
 }
@@ -85,6 +93,7 @@ textarea {
 }
 
 .item-output {
+	/* Prevent any user-defined field from taking over the page */
 	max-height: 15em;
 	overflow: auto;
 	/* anywhere smartly breaks in the middle of words only when appropriate */
