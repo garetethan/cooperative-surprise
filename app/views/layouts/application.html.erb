@@ -14,6 +14,7 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
@@ -21,16 +22,47 @@
   <body>
     <div class='alert alert-danger <% if not alert %> d-none <% end %>' role='alert'><%= alert %></div>
     <div class='alert alert-success <% if not notice %> d-none <% end %>' role='alert'><%= notice %></div>
-    <% if user_signed_in? %>
-        <nav>
-          <%= link_to 'Home', root_path %>
-          <%= link_to 'User settings', edit_user_registration_path %>
-          <% if current_user.administered_family %>
-            <%= link_to 'Family settings', edit_family_path %>
-          <% end %>
-          <%= link_to 'Sign out', destroy_user_session_path, data: { turbo_method: :delete } %>
-        </nav>
-    <% end %>
-    <%= yield %>
+    <nav class='navbar navbar-expand-sm bg-body-tertiary' data-bs-theme='dark'>
+      <div class='container-fluid'>
+        <button class='navbar-toggler' data-bs-toggle='collapse' data-bs-target='#navbar-content' aria-controls='navbar-content' aria-expanded='false' aria-label='Toggle navigation'>
+          <span class='navbar-toggler-icon'></span>
+        </button>
+        <div class='collapse navbar-collapse justify-content-between' id='navbar-content'>
+          <ul class='navbar-nav'>
+            <li class='nav-item'>
+              <%= link_to 'Home', root_path, class: 'nav-link' %>
+            </li>
+            <% if user_signed_in? %>
+              <li class='nav-item'>
+                <%= link_to 'User settings', edit_user_registration_path, class: 'nav-link' %>
+              </li>
+              <% if current_user.administered_family %>
+                <li class='nav-item'>
+                  <%= link_to 'Family settings', edit_family_path, class: 'nav-link' %>
+                </li>
+              <% end %>
+            <% else %>
+              <li class='nav-item'>
+                <%= link_to 'Sign up', new_user_registration_path, class: 'nav-link' %>
+              </li>
+            <% end %>
+          </ul>
+          <ul class='navbar-nav mr-auto'>
+            <% if user_signed_in? %>
+              <li class='nav-item'>
+                <%= link_to 'Sign out', destroy_user_session_path, data: { turbo_method: :delete }, class: 'nav-link' %>
+              </li>
+            <% else %>
+              <li class='nav-item'>
+                <%= link_to 'Sign in', new_user_session_path, class: 'nav-link' %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class='container'>
+      <%= yield %>
+    </div>
   </body>
 </html>

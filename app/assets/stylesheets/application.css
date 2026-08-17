@@ -17,10 +17,6 @@
 /* Many classes used in the views are straight from Bootstrap, and do not appear here */
 
 /* Bootstrap overrides */
-.table-warning {
-	--bs-table-bg: #AA2222;
-}
-
 .alert-success {
 	--bs-alert-bg: #33AA33;
 }
@@ -29,11 +25,24 @@
 	font-weight: bold;
 }
 
+.container {
+	margin: 20px 20px 0px 20px;
+}
+
+.nav-link {
+	/* Defaults to 0.5rem */
+	--bs-navbar-nav-link-padding-x: 0.7rem;
+}
+
 /* I don't like how Bootstrap forces all tables to have a width of 100% */
 .table {
 	width: auto;
 	border-left: 1px solid;
 	border-right: 1px solid;
+}
+
+.table-warning {
+	--bs-table-bg: #AA2222;
 }
 
 /* Project-specific styles */
