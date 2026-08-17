@@ -5,13 +5,13 @@
 
   <div class="field">
     <p><%= f.label 'New or existing family?' %></p>
-    <div>
-      <%= f.radio_button :family_status, 'new', data: { action: 'new-family' } %>
-      <%= f.label :family_status_new, 'Create a new family' %>
+    <div class='form-check'>
+      <%= f.radio_button :family_status, 'new', data: { action: 'new-family' }, class: 'form-check-input' %>
+      <%= f.label :family_status_new, 'Create a new family', class: 'form-check-label' %>
     </div>
-    <div>
-      <%= f.radio_button :family_status, 'existing', data: { action: 'existing-family' } %>
-      <%= f.label :family_status_existing, 'Join an existing family' %>
+    <div class='form-check'>
+      <%= f.radio_button :family_status, 'existing', data: { action: 'existing-family' }, class: 'form-check-input' %>
+      <%= f.label :family_status_existing, 'Join an existing family', class: 'form-check-label' %>
     </div>
     <p>If a family member of yours has asked you to sign-up, you should join their family instead of creating a new one.</p>
   </div>
@@ -54,7 +54,7 @@
   </div>
 
   <div class="actions">
-    <%= f.submit "Sign up" %>
+    <%= f.submit 'Sign up', class: 'btn btn-primary' %>
   </div>
 <% end %>
 
