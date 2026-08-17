@@ -65,6 +65,11 @@ textarea {
 }
 
 /* General */
+.family-code {
+	font-family: monospace;
+	font-size: 150%;
+}
+
 .full-width {
 	width: 100%;
 }
