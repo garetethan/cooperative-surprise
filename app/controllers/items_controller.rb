@@ -35,7 +35,9 @@ class ItemsController < ApplicationController
   end
 
   def set_item_params
-    @item_params = params.require(:item).permit(:name, :price, :description, :link, :plural)
+    # The item update forms all appear on one page, so they have distinct names
+    item_symbol = request.patch? || request.put? ? "item_#{params[:id]}".to_sym : :item
+    @item_params = params.require(item_symbol).permit(:name, :price, :description, :link, :plural)
   end
 
 end

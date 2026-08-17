@@ -17,11 +17,27 @@ class Item < ApplicationRecord
   end
 
   def plural?
-    self.plural
+    plural == 'plural'
   end
 
   def plural=(val)
     super(val == 'plural')
+  end
+
+  def tag_args(field_name)
+    ["item_#{id}[#{field_name}]", self.send(field_name)]
+  end
+
+  def tag_kwargs(field_name)
+    {id: dom_id_mimic(field_name), form: dom_id_mimic(:form)}
+  end
+
+  def dom_id_mimic(prefix = nil)
+    if prefix
+      "#{prefix}_item_#{id}"
+    else
+      "item_#{id}"
+    end
   end
 
 end

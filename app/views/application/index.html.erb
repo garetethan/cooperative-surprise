@@ -19,7 +19,7 @@
           <th class='sortable-column item-output-purchase-col'>Bought?</th>
         </tr>
         <% other_user.items.each do |item| %>
-          <tr <% if item.purchasers.include? current_user or (not item.plural? and not item.purchasers.empty?) %>class='table-warning'<% end %>>
+          <tr <% if item.purchasers.include? current_user or (not item.plural? and not item.purchasers.empty?) %> class='table-warning' <% end %> >
             <%# Name %>
             <td class='item-name-output-col'>
               <p class='item-output'><%= item.name %></p>
@@ -71,6 +71,13 @@
   <% if current_user.items.empty? %>
     <p><i>You don't have any items listed yet.</i></p>
   <% else %>
+    <%# By the rules of HTML we can't have a form wrapping around or tucked just inside of one row of a table %>
+    <%# So we make empty forms up here and individually connect the later inputs to them using form='' %>
+    <% current_user.items.each do |item| %>
+      <%# The namespace prevents, for example, all item name fields from having the same id and name %>
+      <%= form_with model: item, id: dom_id(item, 'form'), class: 'd-none' do %>
+      <% end %>
+    <% end %>
     <table class='table table-dark'>
       <tr>
         <th class='item-name-input-col'>Name</th>
@@ -82,44 +89,40 @@
       </tr>
       <% current_user.items.each do |item| %>
         <tr>
-          <%# The namespace prevents, for example, all item name fields from having the same id and name %>
-          <%= form_with model: item, namespace: "#{item.id}" do |f| %>
-            <%# Name %>
-            <td rowspan='2' class='item-name-input-col'>
-              <%= f.text_field :name, class: 'full-width' %>
-            </td>
-            <%# Price %>
-            <td rowspan='2' class='item-price-input-col'>
-              <%# d-flex keeps the dollar sign next to the price input %>
-              <div class='d-flex'>
-                $&nbsp;<%= f.text_field :price, class: 'full-width' %>
-              </div>
-            </td>
-            <%# Description %>
-            <td rowspan='2' class='item-description-input-col'>
-              <%= f.text_area :description %>
-            </td>
-            <%# Link %>
-            <td rowspan='2' class='item-link-input-col'>
-              <%= f.text_area :link, class: 'item-link-input' %>
-            </td>
-            <%# Plurality %>
-            <td rowspan='2' class='item-plurality-input-col'>
-              <div class='form-check'>
-                <%= f.radio_button :plural, 'singular', class: 'form-check-input' %>
-                <%= f.label :plural_singular, 'If someone buys this for me, others should avoid buying another one', class: 'form-check-label' %>
-              </div>
-              <div class='form-check'>
-                <%= f.radio_button :plural, 'plural', class: 'form-check-input' %>
-                <%= f.label :plural_plural, "It's ok if multiple people each buy me several of this item", class: 'form-check-label' %>
-              </div>
-            </td>
-            <%# Actions %>
-            <td class='item-input-action-col'>
-              <%= f.submit 'Save', class: 'btn btn-success' %>
-            </td>
-          <% end %>
-          <%# We have to close the item update form before the delete item button appears %>
+          <%# Name %>
+          <td rowspan='2' class='item-name-input-col'>
+            <%= text_field_tag "item_#{item.id}[name]", item.send(:name), **item.tag_kwargs(:name), class: 'full-width' %>
+          </td>
+          <%# Price %>
+          <td rowspan='2' class='item-price-input-col'>
+            <%# d-flex keeps the dollar sign next to the price input %>
+            <div class='d-flex'>
+              $&nbsp;<%= text_field_tag *item.tag_args(:price), **item.tag_kwargs(:price), class: 'full-width' %>
+            </div>
+          </td>
+          <%# Description %>
+          <td rowspan='2' class='item-description-input-col'>
+            <%= text_area_tag *item.tag_args(:description), **item.tag_kwargs(:description) %>
+          </td>
+          <%# Link %>
+          <td rowspan='2' class='item-link-input-col'>
+            <%= text_area_tag *item.tag_args(:link), **item.tag_kwargs(:link), class: 'item-link-input' %>
+          </td>
+          <%# Plurality %>
+          <td rowspan='2' class='item-plurality-input-col'>
+            <div class='form-check'>
+              <%= radio_button_tag "item_#{item.id}[plural]", 'singular', !item.plural?, **item.tag_kwargs(:plural_singular), class: 'form-check-input' %>
+              <%= label_tag "item_#{item.id}_plural_singular", 'If someone buys this for me, others should avoid buying another one', for: dom_id(item, 'plural_singular'), class: 'form-check-label' %>
+            </div>
+            <div class='form-check'>
+              <%= radio_button_tag "item_#{item.id}[plural]", 'plural', item.plural?, **item.tag_kwargs(:plural_plural), class: 'form-check-input' %>
+              <%= label_tag "item_#{item.id}_plural_plural", "It's ok if multiple people each buy me several of this item", for: dom_id(item, 'plural_plural'), class: 'form-check-label' %>
+            </div>
+          </td>
+          <%# Actions %>
+          <td class='item-input-action-col'>
+            <%= submit_tag 'Save', form: dom_id(item, 'form'), class: 'btn btn-success' %>
+          </td>
         </tr>
         <tr>
           <td>
@@ -131,7 +134,7 @@
   <% end %>
   <h3>New item</h3>
   <%# The namespace prevents, for example, the item name field from having the same id or name as the name fields of existing items %>
-  <%= form_with model: Item.new, namespace: 'new' do |f|  %>
+  <%= form_with model: Item.new, namespace: 'new' do |f| %>
     <table class='table table-dark full-width'>
       <tr>
         <th class='item-name-input-col'>Name</th>
