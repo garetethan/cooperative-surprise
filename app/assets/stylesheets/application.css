@@ -29,6 +29,11 @@
 	margin: 20px 20px 0px 20px;
 }
 
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	/* Add the same margin to the top as the bottom has */
+	margin-top: 0.5rem;
+}
+
 .nav-link {
 	/* Defaults to 0.5rem */
 	--bs-navbar-nav-link-padding-x: 0.7rem;

@@ -47,5 +47,3 @@
   <% @delete_confirmation += "\nYou are the admin of your family, so deleting your account will leave your family with no admin." %>
 <% end %>
 <div>Unhappy? <%= button_to 'Delete my account', registration_path(resource_name), method: :delete, class: 'btn btn-danger', data: { turbo_confirm: @delete_confirmation }%></div>
-
-<%= link_to "Back", :back %>
