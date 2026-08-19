@@ -18,14 +18,14 @@ const DOWN_ARROW = '\u2193';
 		if (familyCodeField && familyNameField) {
 			let newFamilyTriggers = document.querySelector('[data-action="new-family"]')
 			newFamilyTriggers.addEventListener('click', function() {
-			  familyCodeField.style.display = 'none';
-			  familyNameField.style.display = 'block';
+			  familyCodeField.classList.add('d-none');
+			  familyNameField.classList.remove('d-none');
 			});
 
 			let existingFamilyTriggers = document.querySelector('[data-action="existing-family"]')
 			existingFamilyTriggers.addEventListener('click', function() {
-			  familyCodeField.style.display = 'block';
-			  familyNameField.style.display = 'none';
+			  familyCodeField.classList.remove('d-none');
+			  familyNameField.classList.add('d-none');
 			});
 		}
 
