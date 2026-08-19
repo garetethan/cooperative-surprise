@@ -4,14 +4,19 @@ class PurchasesController < ApplicationController
   before_action :set_purchase, only: [:destroy]
 
   def create
-    if current_user.purchases.create item: @item
+    @purchase = current_user.purchases.create item: @item
+    if @purchase.save
       redirect_to root_path, notice: "You bought #{@item.name}"
+    else
+      action_failed("Could not mark #{@item.name} as bought")
     end
   end
 
   def destroy
     if @purchase.destroy
       redirect_to root_path, notice: "You did not buy #{@item.name}"
+    else
+      action_failed("Could not mark #{@item.name} as not bought")
     end
   end
 
@@ -24,6 +29,10 @@ class PurchasesController < ApplicationController
   # Explicity scope to current user to prevent them from deleting others' purchases
   def set_purchase
     @purchase = current_user.purchases.find_by item: @item
+  end
+
+  def action_failed(message)
+    redirect_to root_path, alert: "#{message}: #{@purchase.errors.full_messages.join(', ')}", status: :unprocessable_entity
   end
 
 end
