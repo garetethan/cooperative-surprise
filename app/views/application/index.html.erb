@@ -50,10 +50,10 @@
               <% else %>
                 <p>Someone else already bought this item.</p>
               <% end %>
-              <% if item.plural? %>
-                <% if item.purchasers.empty? %>
-                  <p>No one has bought this item yet.</p>
-                <% elsif item.purchasers.length == 1 and item.purchasers.first == current_user %>
+              <% if item.purchasers.empty? %>
+                <p>No one has bought this item yet.</p>
+              <% elsif item.plural? %>
+                <% if item.purchasers.length == 1 and item.purchasers.first == current_user %>
                   <p>No one else has bought this item yet.</p>
                 <% else %>
                   <% item_count = item.purchasers.count {|us| us != current_user} %>
@@ -82,8 +82,8 @@
       <tr>
         <th class='item-name-input-col'>Name</th>
         <th class='item-price-input-col'>Price</th>
-        <th class='item-description-input-col'>Description</th>
-        <th class='item-link-input-col'>Link</th>
+        <th class='item-description-input-col'>Description (optional)</th>
+        <th class='item-link-input-col'>Link (optional)</th>
         <th class='item-plurality-input-col'>Plurality</th>
         <th class='item-input-action-col'>Actions</th>
       </tr>
@@ -139,8 +139,8 @@
       <tr>
         <th class='item-name-input-col'>Name</th>
         <th class='item-price-input-col'>Price</th>
-        <th class='item-description-input-col'>Description</th>
-        <th class='item-link-input-col'>Link</th>
+        <th class='item-description-input-col'>Description (optional)</th>
+        <th class='item-link-input-col'>Link (optional)</th>
         <th class='item-plurality-input-col'>Plurality</th>
         <th class='item-input-action-col'>Save</th>
       </tr>
