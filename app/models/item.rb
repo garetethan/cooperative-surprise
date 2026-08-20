@@ -24,6 +24,19 @@ class Item < ApplicationRecord
     super(val == 'plural')
   end
 
+  # Items are sorted ascending by this value, so high priority items have smaller sort values
+  def purchase_sort_value(user)
+    if purchasers.empty?
+      0
+    else
+      if plural?
+        1
+      else
+        2
+      end
+    end
+  end
+
   def tag_args(field_name)
     ["item_#{id}[#{field_name}]", self.send(field_name)]
   end

@@ -10,13 +10,13 @@
     <% if other_user.items.empty? %>
       <p><i>This person hasn't made their list yet.</i></p>
     <% else %>
-      <table class='table table-dark'>
+      <table class='table table-dark item-output-table'>
         <tr>
-          <th class='sortable-column item-name-output-col'>Name</th>
-          <th class='sortable-column item-price-output-col'>Price</th>
+          <th class='item-name-output-col'>Name</th>
+          <th class='item-price-output-col'>Price</th>
           <th class='item-description-output-col'>Description</th>
           <th class='item-link-output-col'>Link</th>
-          <th class='sortable-column item-output-purchase-col'>Bought?</th>
+          <th class='item-output-purchase-col'>Bought?</th>
         </tr>
         <% other_user.items.each do |item| %>
           <tr <% if item.purchasers.include? current_user or (not item.plural? and not item.purchasers.empty?) %> class='table-warning' <% end %> >
@@ -38,7 +38,7 @@
                 <%= link_to 'Link', item.link, target: '_blank', class: 'btn btn-info' %>
               <% end %>
             </td>
-            <td class='item-output-purchase-col'>
+            <td data-sort-value='<%= item.purchase_sort_value current_user %>' class='item-output-purchase-col'>
               <% if item.plural? %>
                 <p>This item may be bought multiple times by multiple people.</p>
               <% end %>
