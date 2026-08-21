@@ -1,6 +1,7 @@
 <% if user_signed_in? %>
   <h1>Wishlist Manager</h1>
   <h2>Welcome, <%= current_user.name %></h2>
+
   <h2 id='others'>Others' lists</h2>
   <% current_user.family.users.each do |other_user| %>
     <% if other_user == current_user %>
@@ -12,6 +13,7 @@
     <% else %>
       <table class='table table-dark item-output-table'>
         <tr>
+          <th class='item-priority-output-col'>Priority</th>
           <th class='item-name-output-col'>Name</th>
           <th class='item-price-output-col'>Price</th>
           <th class='item-description-output-col'>Description</th>
@@ -20,6 +22,10 @@
         </tr>
         <% other_user.items.each do |item| %>
           <tr <% if item.purchasers.include? current_user or (not item.plural? and not item.purchasers.empty?) %> class='table-warning' <% end %> >
+            <%# Priority %>
+            <td class='item-priority-output-col'>
+              <p class='item-output'><%= item.priority %></p>
+            </td>
             <%# Name %>
             <td class='item-name-output-col'>
               <p class='item-output'><%= item.name %></p>
@@ -66,6 +72,7 @@
       </table>
     <% end %>
   <% end %>
+
   <h2 id='you'>Your list</h2>
   <h3>Existing items</h3>
   <% if current_user.items.empty? %>
@@ -80,15 +87,20 @@
     <% end %>
     <table class='table table-dark'>
       <tr>
-        <th class='item-name-input-col'>Name</th>
-        <th class='item-price-input-col'>Price</th>
-        <th class='item-description-input-col'>Description (optional)</th>
-        <th class='item-link-input-col'>Link (optional)</th>
-        <th class='item-plurality-input-col'>Plurality</th>
+        <th class='item-priority-input-col'>Priority</th>
+        <th class='item-name-input-col'>Name (req)</th>
+        <th class='item-price-input-col'>Price (req)</th>
+        <th class='item-description-input-col'>Description</th>
+        <th class='item-link-input-col'>Link</th>
+        <th class='item-plurality-input-col'>Plurality (req)</th>
         <th class='item-input-action-col'>Actions</th>
       </tr>
       <% current_user.items.each do |item| %>
         <tr>
+          <%# Priority %>
+          <td rowspan='2' class='item-priority-input-col'>
+            <%= number_field_tag *item.tag_args(:priority), **item.tag_kwargs(:priority), class: 'full-width' %>
+          </td>
           <%# Name %>
           <td rowspan='2' class='item-name-input-col'>
             <%= text_field_tag "item_#{item.id}[name]", item.send(:name), **item.tag_kwargs(:name), class: 'full-width' %>
@@ -132,19 +144,29 @@
       <% end %>
     </table>
   <% end %>
+
   <h3>New item</h3>
+  <dl>
+    <dt>Priorities</dt>
+    <dd>Priorities are optional, and allow you to specify an adjustable default order for items to appear in (often indicating how much you want each item). Give the item you want most a priority of 1, the one you want second most a priority of 2, and so on. (It doesn't matter if you skip numbers.) Any items with no specified priority will appear below all items with a priority. If you don't give any of your items a priority, they will appear in the order you created them.</dd>
+  </dl>
   <%# The namespace prevents, for example, the item name field from having the same id or name as the name fields of existing items %>
   <%= form_with model: Item.new, namespace: 'new' do |f| %>
     <table class='table table-dark full-width'>
       <tr>
-        <th class='item-name-input-col'>Name</th>
-        <th class='item-price-input-col'>Price</th>
-        <th class='item-description-input-col'>Description (optional)</th>
-        <th class='item-link-input-col'>Link (optional)</th>
-        <th class='item-plurality-input-col'>Plurality</th>
+        <th class='item-priority-input-col'>Priority</th>
+        <th class='item-name-input-col'>Name (req)</th>
+        <th class='item-price-input-col'>Price (req)</th>
+        <th class='item-description-input-col'>Description</th>
+        <th class='item-link-input-col'>Link</th>
+        <th class='item-plurality-input-col'>Plurality (req)</th>
         <th class='item-input-action-col'>Save</th>
       </tr>
       <tr>
+        <%# Priority %>
+        <td class='item-priority-input-col'>
+          <%= f.number_field :priority, class: 'full-width' %>
+        </td>
         <%# Name %>
         <td class='item-name-input-col'>
           <%= f.text_field :name, class: 'full-width' %>
@@ -182,6 +204,7 @@
       </tr>
     </table>
   <% end %>
+
 <% else %>
   <h1>Cooperative Surprise</h1>
   <p>Cooperative Surprise is a wishlist manager designed to be used by family members buying gifts for each other. You can create your own wishlist, and everyone except you can mark items they've bought and see what others have already bought. Likewise, you can see what your family members have asked for, and mark off what you buy.</p>

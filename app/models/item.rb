@@ -1,11 +1,23 @@
 class Item < ApplicationRecord
+  LOWEST_PRIORITY = (2 ** 31) - 1
+
   belongs_to :user
   has_many :purchases, dependent: :destroy
   has_many :purchasers, through: :purchases, source: :user
 
+  validates :priority, numericality: { only_integer: true, in: 0..LOWEST_PRIORITY }
   validates :name, presence: true
   validate_identifier :name
-  validates :plural, inclusion: { in: ['singular', 'plural'] }
+  validates :plural, inclusion: { in: ['singular', 'plural'] }, presence: true
+
+  def priority
+    numeric_priority = super
+    if numeric_priority < LOWEST_PRIORITY
+      numeric_priority
+    else
+      nil
+    end
+  end
 
   # Allow views to autofill the right radio button
   def plural

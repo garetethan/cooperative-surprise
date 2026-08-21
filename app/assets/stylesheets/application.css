@@ -104,6 +104,10 @@ textarea {
 	white-space: pre-wrap;
 }
 
+.item-priority-output-col {
+	min-width: 6em;
+}
+
 .item-name-output-col {
 	min-width: 10em;
 }
@@ -126,6 +130,11 @@ textarea {
 }
 
 /* Wishlist input (edit and create) tables */
+.item-priority-input-col {
+	min-width: 5em;
+	width: 1%
+}
+
 .item-name-input-col {
 	min-width: 10em;
 	width: 15%;

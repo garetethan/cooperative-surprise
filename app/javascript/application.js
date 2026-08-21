@@ -5,6 +5,8 @@ import "controllers"
 // I've encountered errors with this library, so I'm intentionally using the unminified version
 import 'sourtable'
 
+const LOWEST_ITEM_PRIORITY = (2 ** 31 ) - 1;
+
 // All these turbo events are ways a page can load
 ['turbo:load', 'turbo:render', 'turbo:morph'].forEach(turbo_event => {
 	document.addEventListener(turbo_event, function() {
@@ -31,18 +33,32 @@ import 'sourtable'
 		// Home page: Sortable wishlist tables
 		for (const table of document.querySelectorAll('.item-output-table')) {
 			if (!table.classList.contains('sourtable-initiated')) {
-				// [2, 3] indicates Description and Link should not be sortable
-				// col_4 identifies Bought
-				const sortable_table = new SourTable(table, [2, 3], {col_4: 'data-sort-value'});
+				// [3, 4] indicates Description and Link should not be sortable
+				// col_5 identifies Bought
+				const sortable_table = new SourTable(table, [3, 4], {col_5: 'data-sort-value'});
 				// By default SourTable removes all dollar signs and parses the remaining string as a number if possible
 				// It also assumes that if the first value in a column is a number, all values in that column should be sorted as numbers
-				// This custom parse function bypasses the float parsing, and allows a mix of numbers, number ranges (like "$10 - 15"), and arbitrary strings
-				sortable_table.addCustomParseFunction(1, parsePrice);
+				// This means we need custom parsers whenever we want a mix of numbers and empty cells or a mix of numbers and strings
+				// Priority: Treat empty cells as a very low (numerically high) priority
+				sortable_table.addCustomParseFunction(0, parsePriority);
+				// Price: Bypass the float parsing, and allow a mix of numbers, number ranges (like "$10 - 15"), and arbitrary strings
+				sortable_table.addCustomParseFunction(2, parsePrice);
 				sortable_table.initiate();
+				// Automatically sort by priority when the page loads
+				sortable_table.sort(0, 'asc');
 			}
 		}
 	});
 });
+
+function parsePriority(text) {
+	if (text) {
+		return parseInt(text);
+	}
+	else {
+		return LOWEST_ITEM_PRIORITY;
+	}
+}
 
 function parsePrice(text) {
 	// Remove the "$" prefix
