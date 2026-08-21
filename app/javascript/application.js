@@ -11,17 +11,17 @@ import './sourtable.js'
 		// User registration: Show and hide family fields
 		// Hide the family ID field if creating a new family
 		// Hide the family name field if joining an existing family
-		let familyCodeField = document.getElementById('family-code-field');
-		let familyNameField = document.getElementById('family-name-field');
+		const familyCodeField = document.getElementById('family-code-field');
+		const familyNameField = document.getElementById('family-name-field');
 
 		if (familyCodeField && familyNameField) {
-			let newFamilyTriggers = document.querySelector('[data-action="new-family"]')
+			const newFamilyTriggers = document.querySelector('[data-action="new-family"]')
 			newFamilyTriggers.addEventListener('click', function() {
 			  familyCodeField.classList.add('d-none');
 			  familyNameField.classList.remove('d-none');
 			});
 
-			let existingFamilyTriggers = document.querySelector('[data-action="existing-family"]')
+			const existingFamilyTriggers = document.querySelector('[data-action="existing-family"]')
 			existingFamilyTriggers.addEventListener('click', function() {
 			  familyCodeField.classList.remove('d-none');
 			  familyNameField.classList.add('d-none');
@@ -34,8 +34,38 @@ import './sourtable.js'
 				// [2, 3] indicates Description and Link should not be sortable
 				// col_4 identifies Bought
 				const sortable_table = new SourTable(table, [2, 3], {col_4: 'data-sort-value'});
+				// By default SourTable removes all dollar signs and parses the remaining string as a number if possible
+				// It also assumes that if the first value in a column is a number, all values in that column should be sorted as numbers
+				// This custom parse function bypasses the float parsing, and allows a mix of numbers, number ranges (like "$10 - 15"), and arbitrary strings
+				sortable_table.addCustomParseFunction(1, parsePrice);
 				sortable_table.initiate();
 			}
 		}
 	});
 });
+
+function parsePrice(text) {
+	// Remove the "$" prefix
+	text = text.slice(1);
+	let num;
+	if (text.includes('-')) {
+		const range = text.split('-', 2);
+		const rangeStart = numberOrInfinity(range[0]);
+		const rangeEnd = numberOrInfinity(range[1]);
+		num = (rangeStart + rangeEnd) / 2;
+	}
+	else {
+		// Assign arbitrary strings a value of Infinity so that they are put last when sorting
+		num = numberOrInfinity(text);
+	}
+	return num;
+}
+
+function numberOrInfinity(text) {
+	// parseFloat never throws
+	let num = parseFloat(text);
+	if (isNaN(num)) {
+		num = Infinity;
+	}
+	return num;
+}
