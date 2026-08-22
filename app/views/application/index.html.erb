@@ -32,7 +32,9 @@
             </td>
             <%# Price %>
             <td class='item-price-output-col'>
-              <p class='item-output'>$<%= item.price %></p>
+              <% if (not item.price.nil?) and (not item.price.empty?) %>
+                <p class='item-output'>$<%= item.price %></p>
+              <% end %>
             </td>
             <%# Description %>
             <td class='item-description-output-col'>
@@ -89,7 +91,7 @@
       <tr>
         <th class='item-priority-input-col'>Priority</th>
         <th class='item-name-input-col'>Name (req)</th>
-        <th class='item-price-input-col'>Price (req)</th>
+        <th class='item-price-input-col'>Price</th>
         <th class='item-description-input-col'>Description</th>
         <th class='item-link-input-col'>Link</th>
         <th class='item-plurality-input-col'>Plurality (req)</th>
@@ -149,6 +151,8 @@
   <dl>
     <dt>Priorities</dt>
     <dd>Priorities are optional, and allow you to specify an adjustable default order for items to appear in (often indicating how much you want each item). Give the item you want most a priority of 1, the one you want second most a priority of 2, and so on. (It doesn't matter if you skip numbers.) Any items with no specified priority will appear below all items with a priority. If you don't give any of your items a priority, they will appear in the order you created them.</dd>
+    <dt>Prices</dt>
+    <dd>Prices are optional, and can be numbers (12.99), ranges (10 - 15, sorted as 12.50), or any other text.</dd>
   </dl>
   <%# The namespace prevents, for example, the item name field from having the same id or name as the name fields of existing items %>
   <%= form_with model: Item.new, namespace: 'new' do |f| %>
@@ -156,7 +160,7 @@
       <tr>
         <th class='item-priority-input-col'>Priority</th>
         <th class='item-name-input-col'>Name (req)</th>
-        <th class='item-price-input-col'>Price (req)</th>
+        <th class='item-price-input-col'>Price</th>
         <th class='item-description-input-col'>Description</th>
         <th class='item-link-input-col'>Link</th>
         <th class='item-plurality-input-col'>Plurality (req)</th>
