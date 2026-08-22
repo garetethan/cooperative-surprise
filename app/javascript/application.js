@@ -3,7 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 // Sortable wishlist tables
 // I've encountered errors with this library, so I'm intentionally using the unminified version
-import './sourtable.js'
+import 'sourtable'
 
 // All these turbo events are ways a page can load
 ['turbo:load', 'turbo:render', 'turbo:morph'].forEach(turbo_event => {
