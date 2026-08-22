@@ -11,7 +11,7 @@
     <% if other_user.items.empty? %>
       <p><i>This person hasn't made their list yet.</i></p>
     <% else %>
-      <table class='table table-dark item-output-table'>
+      <table class='table table-dark others-items-table'>
         <tr>
           <th class='item-priority-output-col'>Priority</th>
           <th class='item-name-output-col'>Name</th>
@@ -87,7 +87,7 @@
       <%= form_with model: item, id: dom_id(item, 'form'), class: 'd-none' do %>
       <% end %>
     <% end %>
-    <table class='table table-dark'>
+    <table class='table table-dark your-items-table'>
       <tr>
         <th class='item-priority-input-col'>Priority</th>
         <th class='item-name-input-col'>Name (req)</th>
@@ -100,30 +100,30 @@
       <% current_user.items.each do |item| %>
         <tr>
           <%# Priority %>
-          <td rowspan='2' class='item-priority-input-col'>
-            <%= number_field_tag *item.tag_args(:priority), **item.tag_kwargs(:priority), class: 'full-width' %>
+          <td data-sort-value='<%= item.priority %>' class='item-priority-input-col'>
+            <%= number_field_tag *item.tag_args(:priority), **item.tag_kwargs(:priority), min: 0, class: 'full-width' %>
           </td>
           <%# Name %>
-          <td rowspan='2' class='item-name-input-col'>
+          <td class='item-name-input-col'>
             <%= text_field_tag "item_#{item.id}[name]", item.send(:name), **item.tag_kwargs(:name), class: 'full-width' %>
           </td>
           <%# Price %>
-          <td rowspan='2' class='item-price-input-col'>
+          <td class='item-price-input-col'>
             <%# d-flex keeps the dollar sign next to the price input %>
             <div class='d-flex'>
               $&nbsp;<%= text_field_tag *item.tag_args(:price), **item.tag_kwargs(:price), class: 'full-width' %>
             </div>
           </td>
           <%# Description %>
-          <td rowspan='2' class='item-description-input-col'>
+          <td class='item-description-input-col'>
             <%= text_area_tag *item.tag_args(:description), **item.tag_kwargs(:description) %>
           </td>
           <%# Link %>
-          <td rowspan='2' class='item-link-input-col'>
+          <td class='item-link-input-col'>
             <%= text_area_tag *item.tag_args(:link), **item.tag_kwargs(:link), class: 'item-link-input' %>
           </td>
           <%# Plurality %>
-          <td rowspan='2' class='item-plurality-input-col'>
+          <td class='item-plurality-input-col'>
             <div class='form-check'>
               <%= radio_button_tag "item_#{item.id}[plural]", 'singular', !item.plural?, **item.tag_kwargs(:plural_singular), class: 'form-check-input' %>
               <%= label_tag "item_#{item.id}_plural_singular", 'If someone buys this for me, others should avoid buying another one', for: dom_id(item, 'plural_singular'), class: 'form-check-label' %>
@@ -135,12 +135,18 @@
           </td>
           <%# Actions %>
           <td class='item-input-action-col'>
-            <%= submit_tag 'Save', form: dom_id(item, 'form'), class: 'btn btn-success' %>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <%= button_to 'Delete', item, method: :delete, class: 'btn btn-danger', data: { turbo_confirm: "Delete #{item.name}?" } %>
+            <table class='item-action-subtable'>
+              <tr>
+                <td>
+                  <%= submit_tag 'Save', form: dom_id(item, 'form'), class: 'btn btn-success' %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= button_to 'Delete', item, method: :delete, class: 'btn btn-danger', data: { turbo_confirm: "Delete #{item.name}?" } %>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
       <% end %>
@@ -169,7 +175,7 @@
       <tr>
         <%# Priority %>
         <td class='item-priority-input-col'>
-          <%= f.number_field :priority, class: 'full-width' %>
+          <%= f.number_field :priority, min: 0, class: 'full-width' %>
         </td>
         <%# Name %>
         <td class='item-name-input-col'>

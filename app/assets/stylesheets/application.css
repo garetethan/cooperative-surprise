@@ -90,10 +90,6 @@ textarea {
 }
 
 /* Wishlist output (show and buy) tables */
-.sortable-column {
-	cursor: pointer;
-}
-
 .item-output {
 	/* Prevent any user-defined field from taking over the page */
 	max-height: 15em;
@@ -121,7 +117,7 @@ textarea {
 	max-width: 50%;
 }
 
-.item-link-output-col {
+td.item-link-output-col {
 	white-space: nowrap;
 }
 
@@ -132,6 +128,7 @@ textarea {
 /* Wishlist input (edit and create) tables */
 .item-priority-input-col {
 	min-width: 5em;
+	/* A tiny width fits the column to the width of its children */
 	width: 1%
 }
 
@@ -160,10 +157,28 @@ textarea {
 	width: 20%;
 }
 
-/* A tiny width fits the column to the width of its children */
+.item-action-subtable {
+	height: 7em;
+}
+
 .item-input-action-col {
-	white-space: nowrap;
 	width: 1%;
+}
+
+td.item-input-action-col {
+	text-align: center;
+	white-space: nowrap;
+}
+
+/* Put borders between the buttons (but not after the last one) */
+.item-action-subtable td {
+	border-bottom: 1px solid white;
+	padding: 1em 0em 1em 0em;
+	text-align: center;
+}
+
+.item-action-subtable tr:last-child td {
+	border-bottom-width: 0px;
 }
 
 .item-link-input {

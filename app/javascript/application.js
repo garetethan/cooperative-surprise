@@ -31,7 +31,7 @@ const LOWEST_ITEM_PRIORITY = (2 ** 31 ) - 1;
 		}
 
 		// Home page: Sortable wishlist tables
-		for (const table of document.querySelectorAll('.item-output-table')) {
+		for (const table of document.querySelectorAll('.others-items-table')) {
 			if (!table.classList.contains('sourtable-initiated')) {
 				// [3, 4] indicates Description and Link should not be sortable
 				// col_5 identifies Bought
@@ -48,16 +48,25 @@ const LOWEST_ITEM_PRIORITY = (2 ** 31 ) - 1;
 				sortable_table.sort(0, 'asc');
 			}
 		}
+		for (const table of document.querySelectorAll('.your-items-table')) {
+			const sortable_table = new SourTable(table);
+			// See comments above on this custom parser
+			sortable_table.addCustomParseFunction(0, parsePriority);
+			// The table needs to be initiated even if we don't need the clickable sort arrows
+			sortable_table.initiate();
+			sortable_table.sort(0, 'asc', 'attr=data-sort-value');
+			// Giving the user sort arrows on this table could give them the impression their sorting will be saved
+			sortable_table.disengage();
+		}
 	});
 });
 
 function parsePriority(text) {
-	if (text) {
-		return parseInt(text);
+	let num = parseInt(text);
+	if (isNaN(num)) {
+		num = LOWEST_ITEM_PRIORITY;
 	}
-	else {
-		return LOWEST_ITEM_PRIORITY;
-	}
+	return num;
 }
 
 function parsePrice(text) {
