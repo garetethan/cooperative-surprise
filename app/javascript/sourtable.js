@@ -92,7 +92,6 @@ class SourTable {
 		this.#sortClickHandler(event)
 	}
 	#sortClickHandler = (event) => {
-		//console.log(event.target)
 
 		const target = event.target.closest(".sourtable-header");
 		if (!target) return;
@@ -126,7 +125,7 @@ class SourTable {
 				const index = `index_${rowIndex}`;
 				row.setAttribute("data-sourtable-row-index", index);
 
-				const tdList = row.querySelectorAll("td");
+				const tdList = row.querySelectorAll(":scope > td");
 				if (colIndex >= tdList.length) {
 					throw new Error(`Column index ${colIndex} is out of bounds for row ${rowIndex}.`);
 				}
@@ -185,7 +184,7 @@ class SourTable {
 				});
 			}
 
-			const tbody = this.#table.querySelector("tbody") || this.#table;
+			const tbody = this.#table.querySelector(":scope > tbody") || this.#table;
 			const last_element = tbody.querySelector(`tr[data-sourtable-row-index="${array[array.length - 1][0]}"]`);
 			if (!last_element) {
 				throw new Error("Could not find last row element in DOM.");
@@ -239,17 +238,17 @@ class SourTable {
 	}
 
 	#getBody() {
-		if (this.#table.querySelector("thead")) {
-			return Array.from(this.#table.querySelectorAll("tbody tr"));
+		const rows = this.#table.querySelectorAll(":scope > tbody > tr");
+		if (this.#table.querySelector(":scope > thead")) {
+			return Array.from(rows);
 		} else {
-			const rows = this.#table.querySelectorAll("tr");
-			return rows.length > 1 ? Array.from(rows).slice(1) : [];
+			return Array.from(rows).slice(1);
 		}
 	}
 
 	#resetIndicatorArrows() {
 		const headerRow = this.#getHeader();
-		const headers = headerRow.querySelectorAll("th");
+		const headers = headerRow.querySelectorAll(":scope > th");
 
 		headers.forEach((th, index) => {
 			if (this.#excludedColumns.includes(index)) return;
