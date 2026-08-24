@@ -79,6 +79,13 @@ textarea {
 }
 
 /* General */
+.christmas-countdown {
+	background-color: darkGreen;
+	color: red;
+	font-weight: bold;
+	padding: 0em 0.6em 0em 0.6em;
+}
+
 .family-code {
 	font-family: monospace;
 	font-size: 150%;
