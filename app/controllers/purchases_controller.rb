@@ -7,9 +7,16 @@ class PurchasesController < ApplicationController
     @purchase = current_user.purchases.create item: @item
     if @purchase.save
       redirect_to root_path, notice: "You bought #{@item.name}"
+    elsif @purchase.errors.of_kind? :singular_conflict
+      redirect_to purchase_conflict_path(@item)
     else
       action_failed("Could not mark #{@item.name} as bought")
     end
+  end
+
+  def conflict
+    original_purchaser = Purchase.find_by(item: @item).user
+    render :conflict, locals: { original_purchaser: original_purchaser }
   end
 
   def destroy
