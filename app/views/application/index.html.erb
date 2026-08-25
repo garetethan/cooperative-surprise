@@ -48,24 +48,24 @@
             </td>
             <td data-sort-value='<%= item.purchase_sort_value current_user %>' class='item-output-purchase-col'>
               <% if item.plural? %>
-                <p>This item may be bought multiple times by multiple people.</p>
+                <p>It's ok if multiple people buy this item.</p>
               <% end %>
               <% if item.purchasers.include? current_user %>
-                <p>You bought this item.</p>
-                <%= button_to "Actually I didn't buy it", item_purchase_path(item, current_user.purchases.find_by(item: item)), method: :delete, class: 'btn btn-warning' %>
+                <p>You've decided to buy this item.</p>
+                <%= button_to "Actually I've decided not to buy it", item_purchase_path(item, current_user.purchases.find_by(item: item)), method: :delete, class: 'btn btn-warning' %>
               <% elsif item.plural? or item.purchasers.empty? %>
-                <%= button_to 'I bought this item', item_purchases_path(item), method: :post, class: 'btn btn-primary' %>
+                <%= button_to "I've decided to buy this item", item_purchases_path(item), method: :post, class: 'btn btn-primary' %>
               <% else %>
-                <p>Someone else already bought this item.</p>
+                <p>Someone else has already decided to buy this item.</p>
               <% end %>
               <% if item.purchasers.empty? %>
-                <p>No one has bought this item yet.</p>
+                <p>No one has decided to buy this item yet.</p>
               <% elsif item.plural? %>
                 <% if item.purchasers.length == 1 and item.purchasers.first == current_user %>
-                  <p>No one else has bought this item yet.</p>
+                  <p>No one else has decided to buy this item yet.</p>
                 <% else %>
                   <% item_count = item.purchasers.count {|us| us != current_user} %>
-                  <p><strong><%= item_count %></strong> other <% if item_count == 1 %>person has<% else %>people have<% end %> already bought this item.</p>
+                  <p><strong><%= item_count %></strong> other <% if item_count == 1 %>person has<% else %>people have<% end %> decided to buy this item.</p>
                 <% end %>
               <% end %>
             </td>
@@ -217,5 +217,5 @@
 
 <% else %>
   <h1>Cooperative Surprise</h1>
-  <p>Cooperative Surprise is a wishlist manager designed to be used by family members buying gifts for each other. You can create your own wishlist, and everyone except you can mark items they've bought and see what others have already bought. Likewise, you can see what your family members have asked for, and mark off what you buy.</p>
+  <p>Cooperative Surprise is a wishlist manager designed to be used by family members buying gifts for each other. You can create your own wishlist, and everyone except you can mark items they've decided to buy and see what others have already bought. Likewise, you can see what your family members have asked for, and mark off what you buy.</p>
 <% end %>

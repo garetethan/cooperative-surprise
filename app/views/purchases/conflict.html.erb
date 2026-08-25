@@ -1,12 +1,14 @@
 <h1>Whoops!</h1>
-<h3>Someone already bought that item!</h3>
+<h3>Someone already decided to buy that item!</h3>
 
-<p>An unfortunate sequence of events have just occurred:
+<p>The following unfortunate sequence of events have just occurred:
 
 <ol>
   <li><p>You opened or refreshed the wishlists page.</p></li>
-  <li><p><%= original_purchaser.name %> indicated they bought <%= @item.name %> for <%= @item.user.name %>.</p></li>
-  <li><p>You tried to indicate that <em>you</em> bought <%= @item.name %> for <%= @item.user.name %>.</p></li>
+  <li><p><%= original_purchaser.name %> indicated <em>they</em> had decided to buy <%= @item.name %> for <%= @item.user.name %>.</p></li>
+  <li><p>You tried to indicate that <em>you</em> decided to buy <%= @item.name %> for <%= @item.user.name %>.</p></li>
 </ol>
 
-<p><%= @item.user.name %> indicated they only want one of this item, so if you've actually bought it already then you'll either want to return it or contact <%= original_purchaser.name %> to see if they can return the <%= @item.name %> that they bought.</p>
+<p><%= @item.user.name %> indicated they only want one of this item, so you should hold off on buying the item if you haven't bought it already. If you have bought it, you should contact <%= original_purchaser.name %> to see if they have already bought the <%= @item.name %>.</p>
+
+<p>You can bookmark this page to save this information for later.</p>
