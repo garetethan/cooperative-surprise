@@ -101,6 +101,11 @@ textarea {
 	width: 100%;
 }
 
+/* Log in and log out buttons */
+.session-button {
+	margin: 0em var(--bs-navbar-nav-link-padding-x);
+}
+
 /* Wishlist output (show and buy) tables */
 .item-output {
 	/* Prevent any user-defined field from taking over the page */
