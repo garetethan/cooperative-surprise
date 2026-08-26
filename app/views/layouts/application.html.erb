@@ -24,8 +24,26 @@
   </head>
 
   <body>
-    <div class='alert alert-danger <% if not alert %> d-none <% end %>' role='alert'><%= alert %></div>
-    <div class='alert alert-success <% if not notice %> d-none <% end %>' role='alert'><%= notice %></div>
+    <% if alert %>
+      <div class='alert alert-danger' role='alert'>
+        <% if alert.has_key? 'list' %>
+          <p><%= alert['lead'] %>:</p>
+          <ul>
+            <% alert['list'].each do | item | %>
+              <li><%= item %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p><%= alert['lead'] %></p>
+        <% end %>
+      </div>
+    <% end %>
+    <% if notice %>
+      <div class='alert alert-success' role='alert'><%= notice %></div>
+    <% end %>
+    <% if devise_controller? and resource.errors.any? %>
+      <div class='alert alert-danger' role='alert'><%= render 'devise/shared/error_messages', resource: resource %></div>
+    <% end %>
     <nav class='navbar navbar-expand-sm bg-body-tertiary' data-bs-theme='dark'>
       <div class='container-fluid'>
         <button class='navbar-toggler' data-bs-toggle='collapse' data-bs-target='#navbar-content' aria-controls='navbar-content' aria-expanded='false' aria-label='Toggle navigation'>

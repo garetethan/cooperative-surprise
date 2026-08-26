@@ -39,7 +39,7 @@ class PurchasesController < ApplicationController
   end
 
   def action_failed(message)
-    redirect_to root_path, alert: "#{message}: #{@purchase.errors.full_messages.join(', ')}", status: :unprocessable_entity
+    redirect_to root_path, alert: { lead: message, list: @purchase.errors.full_messages }
   end
 
 end

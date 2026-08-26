@@ -21,7 +21,7 @@ class FamiliesController < ApplicationController
   def set_administered_family
     @administered_family = current_user.administered_family
     if @administered_family.nil?
-      redirect_to root_path, alert: 'You are not an admin of your family, so you cannot edit it.'
+      redirect_to root_path, alert: { lead: 'You are not an admin of your family, so you cannot edit it.' }
     end
     @administered_family
   end

@@ -42,7 +42,7 @@ class ItemsController < ApplicationController
   end
 
   def action_failed(action)
-    redirect_to root_path, alert: "Unable to #{action} the item: #{@item.errors.full_messages.join('; ')}"
+    redirect_to root_path, alert: { lead: "Unable to #{action} the item", list: @item.errors.full_messages }
   end
 
 end

@@ -85,6 +85,14 @@ textarea {
 }
 
 /* General */
+.alert p {
+	margin: 0em;
+}
+
+.alert ul {
+	margin: 0em;
+}
+
 .christmas-countdown {
 	background-color: darkGreen;
 	color: red;
