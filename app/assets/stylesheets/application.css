@@ -16,7 +16,7 @@
 
 /* Many classes used in the views are straight from Bootstrap, and do not appear here */
 
-/* Bootstrap overrides */
+/* Bootstrap overrides and additions */
 .alert {
 	/* Any bottom margin leaves a gap above the navbar, which looks bad */
 	--bs-alert-margin-bottom: 0rem;
@@ -37,9 +37,15 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	margin-top: 0.5rem;
 }
 
-.nav-link {
+.navbar {
 	/* Defaults to 0.5rem */
 	--bs-navbar-nav-link-padding-x: 0.7rem;
+}
+
+.nav-text {
+	/* We can't leave the display as inline, because then vertical padding would be ineffective */
+	display: flex;
+	padding: var(--bs-nav-link-padding-y) var(--bs-navbar-nav-link-padding-x);
 }
 
 /* I don't like how Bootstrap forces all tables to have a width of 100% */
@@ -83,7 +89,6 @@ textarea {
 	background-color: darkGreen;
 	color: red;
 	font-weight: bold;
-	padding: 0em 0.6em 0em 0.6em;
 }
 
 .family-code {
@@ -180,7 +185,7 @@ td.item-input-action-col {
 /* Put borders between the buttons (but not after the last one) */
 .item-action-subtable td {
 	border-bottom: 1px solid white;
-	padding: 1em 0em 1em 0em;
+	padding: 1em 0em;
 	text-align: center;
 }
 
