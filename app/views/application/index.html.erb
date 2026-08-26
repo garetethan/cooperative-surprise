@@ -80,6 +80,7 @@
   <% if current_user.items.empty? %>
     <p><i>You don't have any items listed yet.</i></p>
   <% else %>
+    <p>Only one item may be updated at a time.</p>
     <%# By the rules of HTML we can't have a form wrapping around or tucked just inside of one row of a table %>
     <%# So we make empty forms up here and individually connect the later inputs to them using form='' %>
     <% current_user.items.each do |item| %>
