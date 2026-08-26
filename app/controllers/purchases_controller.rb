@@ -6,7 +6,7 @@ class PurchasesController < ApplicationController
   def create
     @purchase = current_user.purchases.create item: @item
     if @purchase.save
-      redirect_to root_path, notice: "You bought #{@item.name}"
+      redirect_to root_path, notice: "You decided to buy #{@item.name}"
     elsif @purchase.errors.of_kind? :singular_conflict
       redirect_to purchase_conflict_path(@item)
     else
@@ -21,7 +21,7 @@ class PurchasesController < ApplicationController
 
   def destroy
     if @purchase.destroy
-      redirect_to root_path, notice: "You did not buy #{@item.name}"
+      redirect_to root_path, notice: "You decided not to buy #{@item.name}"
     else
       action_failed("Could not mark #{@item.name} as not bought")
     end
