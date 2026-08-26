@@ -20,10 +20,15 @@
 .alert {
 	/* Any bottom margin leaves a gap above the navbar, which looks bad */
 	--bs-alert-margin-bottom: 0rem;
+	color: black;
+}
+
+/* The default alert backgrounds are both super pale, so make them more vivid */
+.alert-danger {
+	--bs-alert-bg: #AA3333;
 }
 
 .alert-success {
-	/* Make success much greener; the default is super pale */
 	--bs-alert-bg: #33AA33;
 }
 
