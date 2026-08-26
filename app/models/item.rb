@@ -11,12 +11,26 @@ class Item < ApplicationRecord
   validates :plural, inclusion: { in: ['singular', 'plural'] }, presence: true
 
   def priority
-    numeric_priority = super
-    if numeric_priority < LOWEST_PRIORITY
-      numeric_priority
+    val = super
+    if val and val < LOWEST_PRIORITY
+      val
     else
       nil
     end
+  end
+
+  def priority=(val)
+    # This runs before validation on create and update, so we need to convert and validate independently
+    if val.nil? or val == ''
+      return super(LOWEST_PRIORITY)
+    end
+    if val.class == String
+      val = val.to_i
+    end
+    if val >= LOWEST_PRIORITY
+      return super(LOWEST_PRIORITY)
+    end
+    super(val)
   end
 
   # Allow views to autofill the right radio button
