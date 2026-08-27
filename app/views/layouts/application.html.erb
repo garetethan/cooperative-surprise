@@ -24,17 +24,24 @@
   </head>
 
   <body>
-    <% if alert %>
+    <%# Grab the alert's value so we can reassign it if necessary %>
+    <% alert_val = alert() %>
+    <% if alert_val %>
       <div class='alert alert-danger' role='alert'>
-        <% if alert.has_key? 'list' %>
-          <p><%= alert['lead'] %>:</p>
+        <%# Devise gives some alerts as strings %>
+        <% if alert_val.class != Hash %>
+          <% alert_val = { 'lead' => alert_val } %>
+        <% end %>
+        <%# Even though controllers give alert's keys as symbols, they are serialized, converting them to strings %>
+        <% if alert_val.has_key? 'list' %>
+          <p><%= alert_val['lead'] %>:</p>
           <ul>
-            <% alert['list'].each do | item | %>
+            <% alert_val['list'].each do | item | %>
               <li><%= item %></li>
             <% end %>
           </ul>
         <% else %>
-          <p><%= alert['lead'] %></p>
+          <p><%= alert_val['lead'] %></p>
         <% end %>
       </div>
     <% end %>
