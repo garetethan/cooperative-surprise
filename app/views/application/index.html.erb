@@ -40,8 +40,8 @@
               <p class='item-output'><%= item.description %></p>
             </td>
             <%# Link %>
-            <td class='item-link-output-col'>
-              <% if not item.link.nil? and not item.link.empty? %>
+            <td data-sort-value='<% if item.has_link? %> 1 <% else %> 0 <% end %>' class='item-link-output-col'>
+              <% if item.has_link? %>
                 <%= link_to 'Link', item.link, target: '_blank', class: 'btn btn-info' %>
               <% end %>
             </td>

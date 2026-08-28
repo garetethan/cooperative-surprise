@@ -35,7 +35,7 @@ const LOWEST_ITEM_PRIORITY = (2 ** 31 ) - 1;
 			if (!table.classList.contains('sourtable-initiated')) {
 				// [3, 4] indicates Description and Link should not be sortable
 				// col_5 identifies Bought
-				const sortable_table = new SourTable(table, [3, 4], {col_5: 'data-sort-value'});
+				const sortable_table = new SourTable(table, [3], {col_4: 'data-sort-value', col_5: 'data-sort-value'});
 				// By default SourTable removes all dollar signs and parses the remaining string as a number if possible
 				// It also assumes that if the first value in a column is a number, all values in that column should be sorted as numbers
 				// This means we need custom parsers whenever we want a mix of numbers and empty cells or a mix of numbers and strings

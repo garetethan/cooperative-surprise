@@ -63,6 +63,10 @@ class Item < ApplicationRecord
     end
   end
 
+  def has_link?
+    (not link.nil?) and (not link.empty?)
+  end
+
   def tag_args(field_name)
     ["item_#{id}[#{field_name}]", self.send(field_name)]
   end
