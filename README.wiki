@@ -1,1 +1,23 @@
-Cooperative Surprise is a wishlist manager.
+== Cooperative Surprise ==
+Cooperative Surprise is website designed for managing the wishlists of families or friend groups who want to buy gifts for each other. You can [https://cooperative-surprise.up.railway.app/ use it right now for free].
+
+=== Motivation ===
+When a family wants to buy gifts for one another, the classic conundrum is that everyone buying gifts for you needs to coordinate to avoid buying duplicate gifts, but you don't want to spoil the surprise of what you're getting before you tear open the wrapping paper on Christmas morning. And you also likely want to make a list of what you'd like and share it with others. Without a platform designed for this purpose you'll have to resort to making a separate email chain or text thread for each person people in the family, since each one of them has to exclude the person who you're coordinating buying gifts for.
+
+=== How it works ===
+Cooperative Surprise solves this problem. Here's how it works:
+# John registers himself, creates a new family, and is given this family code: <code>zsmcqaaknk</code>
+# He then sends this code to his family members, Rose and Dave. Each of them enters the family code when they register, so they join the family that John created.
+# Now John can create and update his own wishlist, visible to Rose and Dave. For each of his items he specifies whether he wants only one of the item or multiple.
+# When Rose buys something for Dave, John can see that the item has been bought (but not who bought it), so he knows not to buy it (unless Dave indicated he wanted multiple of that item, which John can see). But when Rose buys something for John, John has no idea.
+
+=== Features ===
+* When you're deciding what to buy for others, items that have already been bought for them appear in red. You can sort others' wishlists to see all unbought items at the top, or sort them by price.
+* Items have an optional link field, so when you want a very particular limited edition of your favorite indie artist's new album (and you just know whoever buys it for you will get the wrong one) you can remove all the guess work and give your family members a link straight to the correct item.
+* If you want to you can specify a custom ordering for your items, to rank them based on what you want most.
+* You won't accidentally spoil yourself by visiting the wrong page or clicking the wrong link, because the pages where your family members see what has been bought for you are protected by their own individual passwords.
+
+Cooperative Surprise is most useful at times like Christmas when everyone is buying for everyone, but it also works well for birthdays, and as a way to build your wishlist over time (for people who have trouble making one off the top of their heads).
+
+=== Technical details ===
+Cooperative Surprise is built using [https://rubyonrails.org/ Ruby on Rails], and is hosted on [https://railway.com/ Railway]. It uses the [https://github.com/heartcombo/devise Devise gem] for user authentication, and the [https://sid-the-sloth1.github.io/docs/sourTable.html SourTable Javascript library] for table sorting. Besides that it is entirely built by [https://github.com/garetethan garetethan].
