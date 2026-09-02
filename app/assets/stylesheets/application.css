@@ -119,6 +119,12 @@ textarea {
 	margin: 0em var(--bs-navbar-nav-link-padding-x);
 }
 
+#demo-video {
+	aspect-ratio: 560 / 315;
+	max-width: 100%;
+	width: 1120px;
+}
+
 /* Wishlist output (show and buy) tables */
 .item-output {
 	/* Prevent any user-defined field from taking over the page */
